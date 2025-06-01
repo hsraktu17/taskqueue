@@ -1,7 +1,13 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/gin-gonic/gin"
+)
 
 func main() {
-	fmt.Println("The starting point.....")
+	r := gin.Default()
+	fmt.Println("Server started at 8080")
+	r.Run(":8080")
 }
