@@ -11,5 +11,5 @@ func main() {
 	r := gin.Default()
 	cfg := config.Load()
 	log.Println("config", cfg)
-	r.Run(":", cfg.Port)
+	r.Run(":" + cfg.Port)
 }
