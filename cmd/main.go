@@ -19,8 +19,22 @@ func main() {
 		log.Fatalf("Failed to connect to db %v", err)
 	}
 
+	// REMOVE this block if enums/tables are already created via SQL migration:
 	if err := db.AutoMigrate(&model.Job{}); err != nil {
 		log.Fatalf("failed to migrate: %v", err)
 	}
+
+	log.Println("Database connected.")
+
+	// Attach DB to Gin context if you want (recommended for API handlers)
+	r.Use(func(c *gin.Context) {
+		c.Set("db", db)
+		c.Next()
+	})
+
+	r.GET("/health", func(c *gin.Context) {
+		c.JSON(200, gin.H{"status": "ok"})
+	})
+
 	r.Run(":" + cfg.Port)
 }

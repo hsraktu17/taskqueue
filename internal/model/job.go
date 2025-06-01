@@ -5,6 +5,7 @@ import (
 
 	"github.com/google/uuid"
 	"gorm.io/datatypes"
+	"gorm.io/gorm"
 )
 
 type Job struct {
@@ -19,4 +20,11 @@ type Job struct {
 	LastError        *string        `gorm:"type:text"`
 	CreatedAt        time.Time      `gorm:"type:timestamp;not null;default:now()"`
 	UpdatedAt        time.Time      `gorm:"type:timestamp;not null;default:now()"`
+}
+
+func (j *Job) BeforeCreate(tx *gorm.DB) (err error) {
+	if j.ID == uuid.Nil {
+		j.ID = uuid.New()
+	}
+	return
 }
