@@ -27,9 +27,14 @@ func CreateJobHandle(c *gin.Context) {
 		return
 	}
 
-	db, ok := c.MustGet("db").(*gorm.DB)
+	dbValue, exists := c.Get("db")
+	if !exists {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "database key missing in context"})
+		return
+	}
+	db, ok := dbValue.(*gorm.DB)
 	if !ok {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "database not available"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "invalid database object in context"})
 		return
 	}
 
