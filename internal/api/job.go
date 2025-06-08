@@ -47,7 +47,8 @@ func CreateJobHandle(c *gin.Context) {
 	}
 
 	if err := db.Create(&job).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		log.Printf("Failed to create job: %v", err) // Log the detailed error internally
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "internal server error"}) // Return a generic error message to the client
 		return
 	}
 
